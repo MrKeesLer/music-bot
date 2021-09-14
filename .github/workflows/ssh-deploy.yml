@@ -1,0 +1,17 @@
+name: Deploy on remote server
+on:
+  push:
+    branches:
+      - master
+jobs:
+  deploy-and-run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'echo "Start deploy the bot with ssh"'
+      - uses: easingthemes/ssh-deploy@v2.2.11
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          EXCLUDE: "/.github/, /.gitignore"
+          
