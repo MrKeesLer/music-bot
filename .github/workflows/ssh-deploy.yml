@@ -10,10 +10,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2.4.0
       - uses: easingthemes/ssh-deploy@v2.2.11
-      - run: "npm ci"
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/home/music-bot/src"
+      - run: "npm ci"
           
