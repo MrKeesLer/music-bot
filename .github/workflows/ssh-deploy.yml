@@ -2,7 +2,7 @@ name: Deploy on remote server
 on:
   push:
     branches:
-      - master
+      - feat/ci
 jobs:
   deploy-and-run:
     runs-on: ubuntu-latest
