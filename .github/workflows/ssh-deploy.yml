@@ -7,7 +7,7 @@ jobs:
   deploy-and-run:
     runs-on: ubuntu-latest
     steps:
-      - name: 'echo "Start deploy the bot with ssh"'
+      - run: 'echo "Start deploy the bot with ssh"'
       - uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
