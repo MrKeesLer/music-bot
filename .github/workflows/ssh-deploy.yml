@@ -14,4 +14,5 @@ jobs:
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           EXCLUDE: "/.github/, /.gitignore"
+      - run: 'echo "Finish deploy"'
           
