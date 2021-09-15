@@ -7,12 +7,12 @@ jobs:
   deploy-and-run:
     runs-on: ubuntu-latest
     steps:
-      - run: 'ls'
+      - uses: actions/checkout@v2
+      - name: "Starting SSH deployment"
       - uses: easingthemes/ssh-deploy@v2.2.11
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SERVER_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.REMOTE_HOST }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           TARGET: "/home/music-bot"
-      - run: 'echo "Finish deploy"'
           
