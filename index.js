@@ -1,8 +1,12 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
+const Routes = require('discord-api-types/v9');
+const rest = require('@discordjs/rest');
 const { token, prefix } = require('./config.json');
 const { Player } = require('discord-player');
+
+const GUILD_ID = '667342667977326632';
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -13,8 +17,6 @@ for (const file of commandFiles) {
     const command = require(`./commands/${file}`);
     client.commands.set(command.name, command);
 }
-
-console.log(client.commands);
 
 const player = new Player(client);
 
@@ -61,14 +63,26 @@ client.once('disconnect', () => {
 client.on("message", async (message) => {
     if(message.author.bot || !message.guild) return;
     if(!client.application?.owner) await client.application?.fetch();
-
-    if(message.content === `${prefix}deploy` && message.author.id === client.application?.owner?.id){
-        message.guild.commands.set(client.commands).then(() => {
-            message.reply('Deployed!');
-        }).catch((err) => {
-            message.reply('Could not deploy commands! Make sure the bot has application.commands perission!');
+    if(message.content === `${prefix}deploy`){
+        /*
+        const guild = message.guild;
+        console.log(guild.commands);
+        try {
+            await guild.commands.set(client.commands);
+            message.reply("Deployed!");
+        } catch (err){
+            message.reply("Could not deploy commands! Make sure the bot has the application.commands permission!");
             console.error(err);
-        });
+        }
+        */
+       try {
+           console.log(client.guilds.cache.get(GUILD_ID));
+           client.guilds.cache.get(GUILD_ID).commands.create(client.commands);
+           message.reply("Deployed!");
+       } catch (err) {
+            message.reply("Could not deploy commands! Make sure the bot has the application.commands permission!");
+            console.error(err);
+       }
     }
 });
 

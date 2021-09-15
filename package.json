@@ -1,6 +1,8 @@
 {
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
+    "@discordjs/rest": "^0.1.0-canary.0",
+    "discord-api-types": "^0.22.0",
     "discord-player": "^5.1.0",
     "discord.js": "^12.5.3",
     "ffmpeg": "^0.0.4",
@@ -17,6 +19,5 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
-  "type": "module"
+  "description": ""
 }
