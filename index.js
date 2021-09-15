@@ -1,12 +1,16 @@
 const fs = require('fs');
 const Discord = require('discord.js');
 const Client = require('./client/Client');
-const Routes = require('discord-api-types/v9');
-const rest = require('@discordjs/rest');
-const { token, prefix } = require('./config.json');
+const { Routes } = require('discord-api-types/v9');
+const { REST } = require('@discordjs/rest');
+const { prefix } = require('./config.json');
 const { Player } = require('discord-player');
 
-const GUILD_ID = '667342667977326632';
+
+const CLIENT_TOKEN = process.env.BOT_TOKEN;
+const CLIENT_ID = process.env.BOT_ID;
+
+const rest = new REST({version: '9'}).setToken(CLIENT_TOKEN);
 
 const client = new Client();
 client.commands = new Discord.Collection();
@@ -19,6 +23,8 @@ for (const file of commandFiles) {
 }
 
 const player = new Player(client);
+
+client.login(CLIENT_TOKEN);
 
 player.on('error', (queue, error) => {
     console.log(`[${queue.guild.name}] Error emitted from the queue: ${error.message}`);
@@ -64,25 +70,18 @@ client.on("message", async (message) => {
     if(message.author.bot || !message.guild) return;
     if(!client.application?.owner) await client.application?.fetch();
     if(message.content === `${prefix}deploy`){
-        /*
-        const guild = message.guild;
-        console.log(guild.commands);
-        try {
-            await guild.commands.set(client.commands);
+       (async () => {
+        try {   
+            rest.put(
+                Routes.applicationGuildCommands(CLIENT_ID,message.guild.id),
+                { body: client.commands},
+            );
             message.reply("Deployed!");
-        } catch (err){
-            message.reply("Could not deploy commands! Make sure the bot has the application.commands permission!");
-            console.error(err);
+        } catch (err) {
+             message.reply("Could not deploy commands! Make sure the bot has the application.commands permission!");
+             console.error(err);
         }
-        */
-       try {
-           console.log(client.guilds.cache.get(GUILD_ID));
-           client.guilds.cache.get(GUILD_ID).commands.create(client.commands);
-           message.reply("Deployed!");
-       } catch (err) {
-            message.reply("Could not deploy commands! Make sure the bot has the application.commands permission!");
-            console.error(err);
-       }
+       })();
     }
 });
 
@@ -102,4 +101,3 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login(token);
