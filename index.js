@@ -9,6 +9,7 @@ const { Player } = require('discord-player');
 
 const CLIENT_TOKEN = process.env.BOT_TOKEN;
 const CLIENT_ID = process.env.BOT_ID;
+const AUTHOR_ID = process.env.AUTHOR_ID;
 
 const rest = new REST({version: '9'}).setToken(CLIENT_TOKEN);
 
@@ -92,9 +93,12 @@ client.on('interactionCreate', async interaction => {
             command.execute(interaction, client);
         } else {
             command.execute(interaction, player);
+            
         }
     } catch (error){
-        console.error(error);
+        client.users.fetch(AUTHOR_ID).then((user) => {
+            user.send(error);
+        });
         interaction.followUp({
             content: 'There was an error trying to execute that command!',
         });
