@@ -27,13 +27,14 @@ module.exports = {
             return void interaction.followUp({
                 content: '❌ | No music is being played!',
             });
+        const tracks = [];
+        for (let index = 0; index < queue.toJSON().tracks.length || index>24; index++) {
+            tracks.push({name :`${index+1}`,value: `${queue.toJSON().tracks[index].title}`});
+        }
         return void interaction.followUp({
             embeds: [{
                 title: 'Playlist',
-                fields: [{
-                    name: '🎶 | List of all song in the queue',
-                    value: queue.toString(),
-                }],
+                fields: [tracks],
             }],
         });
     },
